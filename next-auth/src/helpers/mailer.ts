@@ -9,8 +9,10 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
 
     if (emailType === "VERIFY") {
       await User.findByIdAndUpdate(userId, {
-        verifyToken: hashedToken,
-        verifyTokenExpiry: Date.now() + 3600000,
+        $set: {
+          verifyToken: hashedToken,
+          verifyTokenExpiry: Date.now() + 3600000,
+        },
       });
     } else if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
@@ -47,12 +49,10 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
         process.env.DOMAIN
       }/verifyemail?token=${hashedToken}">here</a> to ${
         emailType === "VERIFY" ? "verify" : "reset"
-      } OR copy and paste link in browser <br> </p>`,
+      } OR copy and paste link in browser <br> ${hashedToken}  </p>`,
     };
 
     const mailResponse = await transport.sendMail(mailOptions);
-    console.log("Message sent: %s", mailResponse.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(mailResponse));
     return mailResponse;
   } catch (error: any) {
     throw new Error(error.message);

@@ -7,7 +7,7 @@ connect();
 
 export async function POST(request: NextRequest) {
   try {
-    // here we will get email and password from request body and check if user exists with email and password
+    // here we will get email and password from request body and check user exists with email and password
     const reqBody = await request.json();
     const { email, password } = reqBody;
     const user = await User.findOne({ email });
@@ -23,13 +23,15 @@ export async function POST(request: NextRequest) {
 
     // if password is not valid then return error message and status 400
 
-    const isValidPassword = await bcryptjs.compare(password, user.password);
-    if (!isValidPassword) {
-      return NextResponse.json(
-        { error: "Invalid email or password" },
-        { status: 400 }
-      );
-    }
+    // const isValidPassword = await bcryptjs.compare(password, user.password);
+    // if (!isValidPassword) {
+    //   return NextResponse.json(
+    //     { error: "Invalid email or password" },
+    //     { status: 400 }
+    //   );
+    // }
+
+    
     // if user email is not verified then return error message and status 400
     if (!user.isVerified) {
       return NextResponse.json(
@@ -56,7 +58,7 @@ export async function POST(request: NextRequest) {
 
     // now we have response variable so we can write response.cookies.set() method
     // in set method only token is required but we can also set some options and httpOnly is very important due httpOnly server can change and manipulate cookie, user can only view it.
-    
+
     response.cookies.set("token", token, {
       httpOnly: true,
     });
