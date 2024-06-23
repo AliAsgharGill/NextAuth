@@ -31,7 +31,7 @@ const SignupPage = () => {
       setLoading(true);
       setButtonDisabled(true);
       const response = await axios.post(
-        "http://localhost:3000/api/users/signup",
+        "api/users/signup",
         user
       );
       console.log("response", response.data);
