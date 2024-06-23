@@ -40,6 +40,8 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
     //   },
     // });
 
+    /* This `mailOptions` object is defining the options for the email that will be sent using
+    Nodemailer. Here's a breakdown of each property: */
     const mailOptions = {
       from: "stylinalivlgos@gmail.com", // sender address
       to: email, // list of receivers
